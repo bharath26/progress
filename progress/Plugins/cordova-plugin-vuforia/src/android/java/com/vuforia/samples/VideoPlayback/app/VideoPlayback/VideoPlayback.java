@@ -11,9 +11,13 @@ countries.
 package com.vuforia.samples.VideoPlayback.app.VideoPlayback;
 
 import java.util.Vector;
+import java.util.ArrayList;
+import android.content.IntentFilter;
+import android.content.BroadcastReceiver;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -55,6 +59,7 @@ public class VideoPlayback extends Activity implements
     SampleApplicationControl
 {
     private static final String LOGTAG = "VideoPlayback";
+     private static final String FILE_PROTOCOL = "file://";
     
     SampleApplicationSession vuforiaAppSession;
     
@@ -102,6 +107,19 @@ public class VideoPlayback extends Activity implements
     boolean mIsDroidDevice = false;
     boolean mIsInitialized = false;
     
+     // Array of target names
+    String mTargets;
+
+    // Vuforia license key
+    String mLicenseKey;
+    
+    private ArrayList<String> mDatasetStrings = new ArrayList<String>();
+    
+    private DataSet mCurrentDataset;
+    private int mCurrentDatasetSelectionIndex = 0;
+    private int mStartDatasetsIndex = 0;
+
+  
     
     // Called when the activity first starts or the user navigates back
     // to an activity.
@@ -110,11 +128,29 @@ public class VideoPlayback extends Activity implements
         Log.d(LOGTAG, "onCreate");
         super.onCreate(savedInstanceState);
         
+          //Grab a reference to our Intent so that we can get the extra data passed into it
+        Intent intent = getIntent();
+        
+        //Get the vuoria license key that was passed into the plugin
+        mLicenseKey = intent.getStringExtra("LICENSE_KEY");
+        
+        //Get the passed in targets file
+        String target_file = intent.getStringExtra("IMAGE_TARGET_FILE");
+         String video_file = intent.getStringExtra("VIDEO_PLAY_FILE");
+        mTargets = intent.getStringExtra("IMAGE_TARGETS");
+        mLicenseKey = intent.getStringExtra("LICENSE_KEY");
+
+        
         vuforiaAppSession = new SampleApplicationSession(this);
         
         mActivity = this;
         
+        
+        
         startLoadingAnimation();
+        
+        mDatasetStrings.add(target_file);
+
         
         vuforiaAppSession
             .initAR(this, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -143,8 +179,8 @@ public class VideoPlayback extends Activity implements
             mVideoPlayerHelper[i].setActivity(this);
         }
 
-        mMovieName[STONES] = "www/targets/VideoPlayback/VuforiaSizzleReel_1.mp4";
-        mMovieName[CHIPS] = "www/targets/VideoPlayback/VuforiaSizzleReel_2.mp4";
+        mMovieName[STONES] = video_file;
+        mMovieName[CHIPS] = video_file;
         
         // Set the double tap listener:
         mGestureDetector.setOnDoubleTapListener(new OnDoubleTapListener()
@@ -554,9 +590,23 @@ public class VideoPlayback extends Activity implements
             return false;
         }
         
+        
+        //Determine the storage type.
+        int storage_type;
+        String dataFile = mDatasetStrings.get(mCurrentDatasetSelectionIndex);
+
+        if(dataFile.startsWith(FILE_PROTOCOL)){
+            storage_type = STORAGE_TYPE.STORAGE_ABSOLUTE;
+            dataFile = dataFile.substring(FILE_PROTOCOL.length(), dataFile.length());
+            mDatasetStrings.set(mCurrentDatasetSelectionIndex, dataFile);
+            Log.d(LOGTAG, "Reading the absolute path: " + dataFile);
+        }else{
+            storage_type = STORAGE_TYPE.STORAGE_APPRESOURCE;
+            Log.d(LOGTAG, "Reading the path " + dataFile + " from the assets folder.");
+        }
+        
         // Load the data sets:
-        if (!dataSetStonesAndChips.load("www/targets/StonesAndChips.xml",
-            STORAGE_TYPE.STORAGE_APPRESOURCE))
+        if (!dataSetStonesAndChips.load(mDatasetStrings.get(mCurrentDatasetSelectionIndex),storage_type))
         {
             Log.d(LOGTAG, "Failed to load data set.");
             return false;
