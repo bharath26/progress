@@ -55,12 +55,12 @@ var app = {
         document.getElementById('stop-vuforia').onclick = function () {
             app.stopVuforia();
         }
+        
     },
     // Start the Vuforia plugin
     startVuforia: function(){
         navigator.VuforiaPlugin.startVuforia(
-            'www/targets/StonesAndChips.xml',
-            'www/targets/VideoPlayback/VuforiaSizzleReel_1.mp4',
+            [['www/targets/StonesAndChips.xml','www/targets/VideoPlayback/VuforiaSizzleReel_1.mp4']],
             [ 'progress_logo-ConvertImage' ],
             'WELCOME TO PROGRESS SOFTWARE :) ',
             'AXS9OVT/////AAAAATStnsnnbEO1kRZ4TqvtXQ5LsMDYdBArHiQXGEV90mrNq7vT4yN+uIELTozmJgdzC38rzKY5Y/0wRjo3kIsegKdgidnaEQ6TJ2qp/frENI9cI2icfrHdJZwjJj2AIdUHXlUmQuAsTnTineiv+kALk12YKPOLfiX3zoxOhLWLKk14P/LpsJb9f/+vlrARLe7FCRV6ZYVJiiOzMQ3dCakSS0d/JrtBv04wtEbgiy5QUGWKIC07IH3hNGg0vlsn/5pfA8vlirMxasrPxJLzbSEz/UKKn9gQ1l34RCdcSLp6REUnCyq0PuOaE1VcO6gje1uYwmg/zQ7OqRY9PJMSms/Tu2OfGZuMP2bBnYZ3WS63Tlg4',

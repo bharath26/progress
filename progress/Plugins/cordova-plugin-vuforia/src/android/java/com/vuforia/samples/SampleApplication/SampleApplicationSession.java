@@ -78,10 +78,10 @@ public class SampleApplicationSession implements UpdateCallbackInterface
     private boolean mIsPortrait = false;
     
     
-    public SampleApplicationSession(SampleApplicationControl sessionControl)
+    public SampleApplicationSession(SampleApplicationControl sessionControl, String vuforiaLicense)
     {
         mSessionControl = sessionControl;
-        mLicenseKey = "AXS9OVT/////AAAAATStnsnnbEO1kRZ4TqvtXQ5LsMDYdBArHiQXGEV90mrNq7vT4yN+uIELTozmJgdzC38rzKY5Y/0wRjo3kIsegKdgidnaEQ6TJ2qp/frENI9cI2icfrHdJZwjJj2AIdUHXlUmQuAsTnTineiv+kALk12YKPOLfiX3zoxOhLWLKk14P/LpsJb9f/+vlrARLe7FCRV6ZYVJiiOzMQ3dCakSS0d/JrtBv04wtEbgiy5QUGWKIC07IH3hNGg0vlsn/5pfA8vlirMxasrPxJLzbSEz/UKKn9gQ1l34RCdcSLp6REUnCyq0PuOaE1VcO6gje1uYwmg/zQ7OqRY9PJMSms/Tu2OfGZuMP2bBnYZ3WS63Tlg4";
+        mLicenseKey = vuforiaLicense;
     }
     
     
@@ -379,7 +379,7 @@ public class SampleApplicationSession implements UpdateCallbackInterface
             // Prevent the onDestroy() method to overlap with initialization:
             synchronized (mShutdownLock)
             {
-                Vuforia.setInitParameters(mActivity, mVuforiaFlags, "AVK66zX/////AAAAAYnllujrfUz7hUUpq+M9EURCjnC/WrH4iDJgbxFtnyMajGVjWgZcdmEIeJBGC5RdENQuWzLT7+69U8Bm2+x1za1J1R5N9J/jlNxhUSrX53lSXjNpeOxNrgu/6TyC6bpVSMoGYRVUgbeCiVopk+lALn5k3jHetYDwYViIqwmJZmZTIkWwN0CTtW/7tzSdgky79jW59ucC+DT3hAjuSYZ1yUdz7kJ+VHF9QsY7Y8WHMW88WZdhEH3UlJVn5rcZk6ZkkXJhxb/UhqIg77AiC22ZYkaMoEzEgtD1nW8Daw15+lcEF0vexy43gnGAHqIzf/EDs5dclelpcIaWxp7IGhbUwuBAYplOXR2G0/Lco39ts7mz");
+                Vuforia.setInitParameters(mActivity, mVuforiaFlags, mLicenseKey);
                 
                 do
                 {

@@ -55,11 +55,12 @@ public class VuforiaPlugin extends CordovaPlugin {
             ACTION = action;
             ARGS = args;
 
-            String targetFile = args.getString(0);
-            String videoFile = args.getString(1);
-            String targets = args.getJSONArray(2).toString();
-            String overlayText = (args.isNull(3)) ? null : args.getString(3);
-            String vuforiaLicense = args.getString(4);
+            //String targetFile = args.getString(0);
+            //String videoFile = args.getString(1);
+            String array2d = args.getJSONArray(0).toString();
+            String targets = args.getJSONArray(1).toString();
+            String overlayText = (args.isNull(2)) ? null : args.getString(2);
+            String vuforiaLicense = args.getString(3);
 
             Log.d(LOGTAG, "Args: "+args);
             Log.d(LOGTAG, "Text: "+overlayText);
@@ -68,8 +69,9 @@ public class VuforiaPlugin extends CordovaPlugin {
             Context context =  cordova.getActivity().getApplicationContext();
 
             Intent intent = new Intent(context, VideoPlayback.class);
-            intent.putExtra("IMAGE_TARGET_FILE", targetFile);
-            intent.putExtra("VIDEO_PLAY_FILE", videoFile);
+            //intent.putExtra("IMAGE_TARGET_FILE", targetFile);
+            //intent.putExtra("VIDEO_PLAY_FILE", videoFile);
+            intent.putExtra("ARRAY_2D", array2d);
             intent.putExtra("IMAGE_TARGETS", targets);
             intent.putExtra("LICENSE_KEY", vuforiaLicense);
 

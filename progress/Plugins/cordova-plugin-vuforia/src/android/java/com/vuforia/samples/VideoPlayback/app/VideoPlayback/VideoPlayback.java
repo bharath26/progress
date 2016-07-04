@@ -12,6 +12,10 @@ package com.vuforia.samples.VideoPlayback.app.VideoPlayback;
 
 import java.util.Vector;
 import java.util.ArrayList;
+
+import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
 import android.content.IntentFilter;
 import android.content.BroadcastReceiver;
 
@@ -134,23 +138,23 @@ public class VideoPlayback extends Activity implements
         //Get the vuoria license key that was passed into the plugin
         mLicenseKey = intent.getStringExtra("LICENSE_KEY");
         
-        //Get the passed in targets file
-        String target_file = intent.getStringExtra("IMAGE_TARGET_FILE");
-         String video_file = intent.getStringExtra("VIDEO_PLAY_FILE");
-        mTargets = intent.getStringExtra("IMAGE_TARGETS");
-        mLicenseKey = intent.getStringExtra("LICENSE_KEY");
-
         
-        vuforiaAppSession = new SampleApplicationSession(this);
+        
+        //Get the passed in targets file
+       // String target_file = intent.getStringExtra("IMAGE_TARGET_FILE");
+        // String video_file = intent.getStringExtra("VIDEO_PLAY_FILE");
+         String array2d = intent.getStringExtra("ARRAY_2D");
+        Log.d(LOGTAG, "Array 2D value :: " + array2d);
+        
+        
+         mTargets = intent.getStringExtra("IMAGE_TARGETS");
+         mLicenseKey = intent.getStringExtra("LICENSE_KEY");
+		 
+        
+        vuforiaAppSession = new SampleApplicationSession(this, mLicenseKey);
         
         mActivity = this;
-        
-        
-        
         startLoadingAnimation();
-        
-        mDatasetStrings.add(target_file);
-
         
         vuforiaAppSession
             .initAR(this, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -178,9 +182,19 @@ public class VideoPlayback extends Activity implements
             mVideoPlayerHelper[i].init();
             mVideoPlayerHelper[i].setActivity(this);
         }
-
-        mMovieName[STONES] = video_file;
-        mMovieName[CHIPS] = video_file;
+		
+        try{
+        	JSONArray arr = new JSONArray(array2d);    
+            for (int i = 0; i < arr.length(); i++)
+            {
+                mDatasetStrings.add(arr.getJSONArray(i).getString(0));
+            }
+            mMovieName[STONES] = arr.getJSONArray(0).getString(1);
+        	mMovieName[CHIPS] = arr.getJSONArray(0).getString(1);
+        }catch( JSONException e ) {
+                    Log.d(LOGTAG, "JSON ERROR: " + e);
+                }
+        
         
         // Set the double tap listener:
         mGestureDetector.setOnDoubleTapListener(new OnDoubleTapListener()

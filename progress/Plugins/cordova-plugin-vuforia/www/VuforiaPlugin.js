@@ -24,7 +24,7 @@ var VuforiaPlugin = {
    * @param {function|null} errorCallback A callback for when an error occurs. Could include device not having a camera,
    *                                      or invalid Vuforia key. Passes an error string with more information.
    */
-  startVuforia: function(imageFile,videoFile ,imageTargets, overlayCopy, vuforiaLicense, imageFoundCallback, errorCallback){
+  startVuforia: function(array2d ,imageTargets, overlayCopy, vuforiaLicense, imageFoundCallback, errorCallback){
     cordova.exec(
       // Register the callback handler
       function callback(data) {
@@ -39,7 +39,7 @@ var VuforiaPlugin = {
       // Execute this method on the above class
       'cordovaStartVuforia',
       // Provide an array of arguments above method
-      [ imageFile, videoFile, imageTargets, overlayCopy, vuforiaLicense ]
+      [ array2d, imageTargets, overlayCopy, vuforiaLicense ]
     );
   },
 
